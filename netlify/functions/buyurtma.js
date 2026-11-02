@@ -59,9 +59,19 @@ function validate(d) {
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") return json(405, { ok: false, xato: "Faqat POST so'rov qabul qilinadi" });
 
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_CHAT_ID;
-  if (!token || !chatId) return json(500, { ok: false, xato: "Server sozlanmagan" });
+  const token = (process.env.TELEGRAM_BOT_TOKEN || "").trim();
+  const chatId = (process.env.TELEGRAM_CHAT_ID || "").trim();
+  if (!token || !chatId) {
+    // Faqat o'zgaruvchi NOMLARI yoziladi, qiymatlari hech qachon logga chiqmaydi.
+    const yoq = [!token && "TELEGRAM_BOT_TOKEN", !chatId && "TELEGRAM_CHAT_ID"].filter(Boolean);
+    const oxshash = Object.keys(process.env).filter(k => /TELEGRAM|BOT|CHAT/i.test(k) && !yoq.includes(k));
+    console.error(
+      `Server sozlanmagan: ${yoq.join(" va ")} topilmadi (yoki bo'sh).` +
+      (oxshash.length ? ` O'xshash nomli o'zgaruvchilar bor: ${oxshash.join(", ")} — nomida xato bo'lishi mumkin.` : " O'xshash nomli o'zgaruvchi ham yo'q.") +
+      " Netlify: Site configuration → Environment variables, «Scopes»da Functions belgilanganini tekshiring va saytni qayta deploy qiling."
+    );
+    return json(500, { ok: false, xato: "Server sozlanmagan" });
+  }
 
   const raw = event.body || "";
   if (raw.length > MAX_BODY) return json(413, { ok: false, xato: "So'rov juda katta" });
