@@ -149,12 +149,15 @@ footer p{font-size:14px;opacity:.85}
 .reveal.in{opacity:1;transform:none}
 
 /* savat */
-body{padding-bottom:76px}
+/* --badge-gap: Netlify'ning «Powered by Netlify» belgisi uchun pastda qoldirilgan joy.
+   Belgi o'chirilsa, bu qiymatni 12px qiling. */
+:root{--badge-gap:80px}
+body{padding-bottom:calc(var(--badge-gap) + 90px)}
 .buy{position:relative}
 .buy .n{position:absolute;top:-5px;right:-5px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--plum);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;border:2px solid #fff;font-family:"Nunito"}
 .buy.pop,.cart-ic.pop{animation:pop .35s}
 @keyframes pop{50%{transform:scale(1.25)}}
-.cart{position:fixed;left:0;right:0;bottom:0;z-index:70;background:rgba(255,250,254,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1.5px solid var(--line);box-shadow:0 -12px 30px -16px rgba(143,61,128,.45)}
+.cart{position:fixed;left:50%;transform:translateX(-50%);width:min(1140px,calc(100% - 20px));bottom:var(--badge-gap);z-index:70;background:rgba(255,250,254,.97);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1.5px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 14px 34px -12px rgba(143,61,128,.5)}
 .cart-list{max-height:0;overflow:auto;transition:max-height .3s}
 .cart.open .cart-list{max-height:min(55vh,420px)}
 .cart-list .wrap{padding-top:14px;padding-bottom:6px}
@@ -187,7 +190,7 @@ body{padding-bottom:76px}
 .cart-sum b small{display:inline;font-family:"Nunito";font-size:13px}
 .cart-bar .btn{padding:12px 20px;font-size:15px;white-space:nowrap}
 .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.fab{bottom:94px}
+.fab{bottom:calc(var(--badge-gap) + 92px)}
 
 /* buyurtma oynasi */
 .modal{position:fixed;inset:0;z-index:90;background:rgba(59,34,54,.5);display:none;place-items:center;padding:18px}
